@@ -13,11 +13,11 @@ public class PlayerMovement : MonoBehaviour
     private float CurrentSpeed {
         get { return _currentSpeed; }
         set {
-            if (value < maxSpeed && value > 0.0f) {
+            if (value < maxSpeed * Time.deltaTime && value > 0.0f) {
                 _currentSpeed = value;
             }
-            else if (value >= maxSpeed ) {
-                _currentSpeed = maxSpeed;
+            else if (value >= maxSpeed * Time.deltaTime) {
+                _currentSpeed = maxSpeed * Time.deltaTime;
             }
             else if (value <= 0.0f) {
                 _currentSpeed = 0.0f;
@@ -29,21 +29,24 @@ public class PlayerMovement : MonoBehaviour
         get {
             return GetComponent<Rigidbody>();
         }
-    } 
-    void FixedUpdate()
+    }
+
+    [SerializeField] private float rotationSpeed;
+    void Update()
     {
         Rigidbody.velocity = Vector3.zero;
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
         if (directionVector != Vector3.zero) {
-            CurrentSpeed += acceleration;
+            CurrentSpeed += acceleration * Time.deltaTime;
             _currentDirectionVector = directionVector;
         }
         else {
-            CurrentSpeed -= deceleration;
+            CurrentSpeed -= deceleration * Time.deltaTime;
         }
 
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_currentDirectionVector), rotationSpeed);
         Rigidbody.velocity += _currentDirectionVector * CurrentSpeed;
     }
 }
