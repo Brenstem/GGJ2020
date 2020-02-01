@@ -2,19 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LayoutGroup : MonoBehaviour
 {
     [Header("Drop")]
     [SerializeField] Image _mainImage = null;
     [SerializeField] Image _amountImage = null;
-    [SerializeField] Text _text = null;
+    [SerializeField]  TMP_Text _text = null;
 
     RepairStage _repairStage;
 
     public RepairStage GetRepairStageGroup()
     {
         return _repairStage;
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        Color temp = _mainImage.color;
+        temp.a = alpha;
+        _mainImage.color = temp;
+        temp = _text.color;
+        temp.a = alpha;
+        _text.color = temp;
+        temp = _amountImage.color;
+        temp.a = alpha;
+        _amountImage.color = temp;
     }
 
     public void Setup(RepairStage repairStage)
@@ -41,14 +55,48 @@ public class LayoutGroup : MonoBehaviour
                     _amountImage.gameObject.SetActive(false);
                     break;
                 }
+            case (PickupType.CHIP):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.ChipSprite;
+                    break;
+                }
+            case (PickupType.GLUE):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.GlueSprite;
+                    break;
+                }
+            case (PickupType.METAL):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.MetalSprite;
+                    break;
+                }
+            case (PickupType.SCREW):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.ScrewSprite;
+                    break;
+                }
+            case (PickupType.TAPE):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.TapeSprite;
+                    break;
+                }
+            case (PickupType.WIRE):
+                {
+                    _text.text = "0/" + _repairStage.Amount;
+                    _mainImage.sprite = _repairStage.WireSprite;
+                    break;
+                }
             default:
                 {
                     Debug.LogWarning("Currently not implemented!");
-                    _text.text = "0/" + _repairStage.Amount;
                     break;
                 }
         }
-        _mainImage.color = _repairStage.MainColor;
     }
 
     public void AddedItem(int amountDone)
