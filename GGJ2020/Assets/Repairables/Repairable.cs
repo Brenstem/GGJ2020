@@ -6,21 +6,25 @@ using UnityEngine.UI;
 [System.Serializable]
 public class RepairStage
 {
-    [SerializeField] Sprite _wireSprite;
-    [SerializeField] Sprite _tapeSprite;
-    [SerializeField] Sprite _screwSprite;
-    [SerializeField] Sprite _glueSprite;
-    [SerializeField] Sprite _metalSprite;
-    [SerializeField] Sprite _chipSprite;
+    Sprite _wireSprite;
+    Sprite _tapeSprite;
+    Sprite _screwSprite;
+    Sprite _glueSprite;
+    Sprite _metalSprite;
+    Sprite _chipSprite;
 
-
-    [SerializeField] Color _mainColor = Color.white;
     [SerializeField] PickupType _pickupType;
     [SerializeField, Range(0, 10)] int _amount;
 
-    [SerializeField] public Color MainColor { get { return _mainColor; } set { _mainColor = value; } }
     [SerializeField] public PickupType PickupType { get { return _pickupType; } set { _pickupType = value; } }
     [SerializeField] public int Amount { get { return _amount; } set { _amount = value; } }
+
+    public Sprite WireSprite { get { return _wireSprite; } set { _wireSprite = value; } }
+    public Sprite TapeSprite { get { return _tapeSprite; } set { _tapeSprite = value; } }
+    public Sprite ScrewSprite { get { return _screwSprite; } set { _screwSprite = value; } }
+    public Sprite GlueSprite { get { return _glueSprite; } set { _glueSprite = value; } }
+    public Sprite MetalSprite { get { return _metalSprite; } set { _metalSprite = value; } }
+    public Sprite ChipSprite { get { return _chipSprite; } set { _chipSprite = value; } }
 
     public RepairStage(PickupType type, int amount, Color color)
     {
@@ -29,7 +33,16 @@ public class RepairStage
 
         PickupType = type;
         Amount = amount;
-        MainColor = color;
+    }
+
+    public void SetSprites(Sprite wireSprite, Sprite tapeSprite, Sprite screwSprite, Sprite glueSprite, Sprite metalSprite, Sprite chipSprite)
+    {
+        _wireSprite = wireSprite;
+        _tapeSprite = tapeSprite;
+        _screwSprite = screwSprite;
+        _glueSprite = glueSprite;
+        _metalSprite = metalSprite;
+        _chipSprite = chipSprite;
     }
 }
 
@@ -42,7 +55,15 @@ public class Repairable : MonoBehaviour
     [SerializeField] GameObject _layoutGroupPrefab;
     [SerializeField] Transform _listOfStuffTransform;
 
+    [SerializeField] Sprite _wireSprite;
+    [SerializeField] Sprite _tapeSprite;
+    [SerializeField] Sprite _screwSprite;
+    [SerializeField] Sprite _glueSprite;
+    [SerializeField] Sprite _metalSprite;
+    [SerializeField] Sprite _chipSprite;
+
     [Header("Settings")]
+    [SerializeField] float _alphaAmount = 0.4f;
     [SerializeField] Color _startColor = Color.red;
     [SerializeField] Color _endColor = Color.green;
     [SerializeField] Timer _completionTimer;
@@ -77,8 +98,9 @@ public class Repairable : MonoBehaviour
 
         for (int i = 0; i < repairStages.Count; i++)
         {
+            repairStages[i].SetSprites(_wireSprite, _tapeSprite, _screwSprite, _glueSprite, _metalSprite, _chipSprite);
+
             GameObject newGroup = GameObject.Instantiate(_layoutGroupPrefab, Vector3.zero, Quaternion.identity, _listOfStuffTransform) as GameObject;
-            newGroup.transform.localRotation = Quaternion.identity;
             newGroup.transform.localPosition = Vector3.zero;
             LayoutGroup newLayoutGroup = newGroup.GetComponent<LayoutGroup>();
             newLayoutGroup.Setup(repairStages[i]);
@@ -92,6 +114,11 @@ public class Repairable : MonoBehaviour
     {
         if (_layoutGroups.Count > 0)
         {
+            for (int i = 0; i < _layoutGroups.Count; i++)
+            {
+                _layoutGroups[i].SetAlpha(1 - i * _alphaAmount);
+            }
+
             _toolRequired = _layoutGroups[0].GetRepairStageGroup().PickupType;
             _currentAmountItemDone = 0;
             _amountItemToDo = _layoutGroups[0].GetRepairStageGroup().Amount;
