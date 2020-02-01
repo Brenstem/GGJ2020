@@ -407,6 +407,10 @@ MonoBehaviour:
   _glueSprite: {fileID: 21300000, guid: 8acdd85ac03e3e94991e6efcf67096ed, type: 3}
   _metalSprite: {fileID: 21300000, guid: d7cae5db7d91b2748bb9291142635162, type: 3}
   _chipSprite: {fileID: 21300000, guid: 6088f2e12c722f4478c5809afa637276, type: 3}
+  _wrenchSprite: {fileID: 21300000, guid: 80e5581057441d446ac038b06cd2bcd4, type: 3}
+  _antiFlameSprite: {fileID: 21300000, guid: 3187d7643fc809a4088e2540b26022cb, type: 3}
+  _mopSprite: {fileID: 21300000, guid: 86aecaf86cd329b43a70890cfd44e63b, type: 3}
+  _alphaAmount: 0.4
   _startColor: {r: 1, g: 0, b: 0, a: 1}
   _endColor: {r: 0, g: 1, b: 0, a: 1}
   _completionTimer:
@@ -420,13 +424,8 @@ MonoBehaviour:
     _duration: 0.5
   _needRepair: 1
   _toolRequired: 4
-  _repairStages:
-  - _pickupType: 8
-    _amount: 2
-  - _pickupType: 0
-    _amount: 3
-  - _pickupType: 8
-    _amount: 7
+  _avaiableMaterials: 0000000001000000030000000400000005000000060000000700000008000000
+  _repairStages: []
 --- !u!1 &1510442768311594098
 GameObject:
   m_ObjectHideFlags: 0

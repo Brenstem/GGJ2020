@@ -39,18 +39,21 @@ public class LayoutGroup : MonoBehaviour
         {
             case (PickupType.WRENCH):
                 {
+                    _mainImage.sprite = _repairStage.WrenchSprite;
                     _text.text = string.Empty;
                     _amountImage.gameObject.SetActive(false);
                     break;
                 }
             case (PickupType.MOP):
                 {
+                    _mainImage.sprite = _repairStage.MopSprite;
                     _text.text = string.Empty;
                     _amountImage.gameObject.SetActive(false);
                     break;
                 }
             case (PickupType.ANTI_FLAMETHROWER):
                 {
+                    _mainImage.sprite = _repairStage.AntiFlameSprite;
                     _text.text = string.Empty;
                     _amountImage.gameObject.SetActive(false);
                     break;

@@ -9,7 +9,7 @@ public class Holder : MonoBehaviour
 
     protected Pickup _thisPickUp;
 
-    public void Place(Pickup pickup)
+    public virtual void Place(Pickup pickup)
     {
         _thisPickUp = pickup;
         _thisPickUp.transform.parent = _place;
