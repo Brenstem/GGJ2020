@@ -34,6 +34,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     void Update()
     {
+        Movement();
+    }
+
+    private void Repair() {
+
+    }
+
+    private void Movement() {
         Rigidbody.velocity = Vector3.zero;
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
