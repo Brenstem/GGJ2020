@@ -38,7 +38,7 @@ public class Gravity : MonoBehaviour
         {
             _rb.AddForce(new Vector3(0, -gravityModifier, 0));
 
-            if (ObjectVelocity.y < -0.1)
+            if (ObjectVelocity.y < -0.01)
             {
                 print("falling");
                 _rb.AddForce(new Vector3(0, -gravityModifier, 0) * mass);
