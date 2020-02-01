@@ -35,8 +35,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Rigidbody.velocity = Vector3.zero;
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
+        float z = Input.GetAxisRaw(InputStatics.VERTICAL);
         Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
         if (directionVector != Vector3.zero) {
             CurrentSpeed += acceleration * Time.deltaTime;
