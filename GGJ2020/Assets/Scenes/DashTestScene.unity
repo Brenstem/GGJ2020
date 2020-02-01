@@ -167,11 +167,12 @@ MonoBehaviour:
   acceleration: 100
   deceleration: 35
   maxSpeed: 350
-  rotationSpeed: 10
+  rotationSpeed: 20
   dashTime: 0.35
   dashSpeed: 500
   stickyDashing: 0
   animator: {fileID: 2064693630}
+  _currentDirectionVector: {x: 0, y: 0, z: 0}
 --- !u!54 &125590051
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -444,13 +445,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850971129}
-  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0.07, y: 3.65, z: -4.58}
+  m_LocalRotation: {x: 0.251816, y: 0, z: 0, w: 0.96777517}
+  m_LocalPosition: {x: 0.07, y: 2.35, z: -5.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.17, y: 0, z: 0}
 --- !u!1 &956057090
 GameObject:
   m_ObjectHideFlags: 0
