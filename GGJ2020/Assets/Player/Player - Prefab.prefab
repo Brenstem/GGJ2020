@@ -47,7 +47,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707628166970109246}
   serializedVersion: 2
-  m_Mass: 50
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityModifier: 9.81
+  mass: 50
 --- !u!114 &1905512911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,11 +250,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1707628166970109218}
     m_Modifications:
-    - target: {fileID: 7477529662824876778, guid: 626a075d558c89e4da790c3f0d1af3a4,
-        type: 3}
-      propertyPath: m_Name
-      value: PlayerPickupSystem
-      objectReference: {fileID: 0}
     - target: {fileID: 7477529662824876777, guid: 626a075d558c89e4da790c3f0d1af3a4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -308,6 +304,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7477529662824876778, guid: 626a075d558c89e4da790c3f0d1af3a4,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerPickupSystem
       objectReference: {fileID: 0}
     - target: {fileID: 7477529663032389543, guid: 626a075d558c89e4da790c3f0d1af3a4,
         type: 3}
