@@ -71,6 +71,7 @@ public class Repairable : MonoBehaviour
         {
             GameObject newGroup = GameObject.Instantiate(_layoutGroupPrefab, Vector3.zero, Quaternion.identity, _listOfStuffTransform) as GameObject;
             newGroup.transform.localRotation = Quaternion.identity;
+            newGroup.transform.localPosition = Vector3.zero;
             LayoutGroup newLayoutGroup = newGroup.GetComponent<LayoutGroup>();
             newLayoutGroup.Setup(repairStages[i]);
             _layoutGroups.Add(newLayoutGroup);
@@ -161,6 +162,7 @@ public class Repairable : MonoBehaviour
         _eachStepRepairTimer.Reset();
         _completionTimer.Reset();
         _slider.gameObject.SetActive(false);
+        _backgroundSliderImage.color = _startColor;
         _slider.value = 0;
         _layoutGroups[0].Delete();
         _layoutGroups.Remove(_layoutGroups[0]);

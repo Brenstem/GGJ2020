@@ -5,9 +5,9 @@ using UnityEngine;
 public class Holder : MonoBehaviour
 {
     [Header("Drop")]
-    [SerializeField] Transform _place;
+    [SerializeField] protected Transform _place;
 
-    Pickup _thisPickUp;
+    protected Pickup _thisPickUp;
 
     public void Place(Pickup pickup)
     {
@@ -17,21 +17,21 @@ public class Holder : MonoBehaviour
         _thisPickUp.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    public bool CanPickUp()
+    public virtual bool CanPickUp()
     {
         if (_thisPickUp != null)
             return true;
         return false;
     }
 
-    public bool CanDropOff()
+    public virtual bool CanDropOff()
     {
         if (_thisPickUp != null)
             return false;
         return true;
     }
 
-    public Pickup Pickup()
+    public virtual Pickup Pickup()
     {
         Pickup temp = _thisPickUp;
         _thisPickUp = null;

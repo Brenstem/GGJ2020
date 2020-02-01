@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class PlayerPickUp : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] Vector3 _mopHolderPosition = new Vector3(0.00513f, 0.00024f, 0);
+    [SerializeField] Vector3 _mopHolderRotation = new Vector3(0, 0, 95.2f);
+    [SerializeField] Vector3 _wrenchHolderPosition = new Vector3(0, -0.00054f, 0);
+    [SerializeField] Vector3 _wrenchHolderRotation = new Vector3(0, 90, 0);
+    [SerializeField] Vector3 _flameHolderPosition = new Vector3(-0.00345f, 0.001f, 0);
+    [SerializeField] Vector3 _flameHolderRotation = new Vector3(180, 0, -78.8f);
+
     [Header("Drop")]
-    [SerializeField] Transform _holder;
+    [SerializeField] Transform _toolHolder;
+    [SerializeField] Transform _itemHolder;
 
     Rigidbody _playerRigidBody;
 
@@ -26,7 +35,7 @@ public class PlayerPickUp : MonoBehaviour
         {
             //Currently not holding anything, can pick something up though
             if (_currentPickupInArms == null && _currentPickupInView != null)
-                PickupNewItem();
+                PickupNewItem(_currentPickupInView);
             //Holding item and can let go of item
             else if (_currentPickupInArms != null && _holderInView != null && _holderInView.CanDropOff())
                 DropItemOnHolder();
@@ -84,7 +93,7 @@ public class PlayerPickUp : MonoBehaviour
             return _currentPickupInArms.GetPickupType();
     }
 
-    private void PickupNewItem()
+    private void PickupNewItem(Pickup pickup)
     {
         PickupType type = _currentPickupInView.GetPickupType();
 
@@ -92,57 +101,40 @@ public class PlayerPickUp : MonoBehaviour
         {
             case (PickupType.ANTI_FLAMETHROWER):
                 {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.CHIP):
-                {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.GLUE):
-                {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.METAL):
-                {
-                    BasicPickUp();
+                    _toolHolder.localPosition = _flameHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_flameHolderRotation);
+                    BasicPickUp(pickup, _toolHolder);
                     break;
                 }
             case (PickupType.MOP):
                 {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.SCREW):
-                {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.TAPE):
-                {
-                    BasicPickUp();
-                    break;
-                }
-            case (PickupType.WIRE):
-                {
-                    BasicPickUp();
+                    _toolHolder.localPosition = _mopHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_mopHolderRotation);
+                    BasicPickUp(pickup, _toolHolder);
                     break;
                 }
             case (PickupType.WRENCH):
                 {
-                    BasicPickUp();
+                    _toolHolder.localPosition = _wrenchHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_wrenchHolderRotation);
+                    BasicPickUp(pickup, _toolHolder);
                     break;
                 }
-            default: throw new System.Exception("This item is not implemented correctly: " + type);
+            default:
+                {
+                    BasicPickUp(pickup, _itemHolder);
+
+                    // LÄGG IN ANIMATION FÖR SPRINGA MED ITEM
+
+                    break;
+                }
         }
     }
 
-    private void BasicPickUp()
+    private void BasicPickUp(Pickup pickup, Transform holder)
     {
-        _currentPickupInView.transform.parent = _holder;
-        _currentPickupInArms = _currentPickupInView;
+        pickup.transform.parent = holder;
+        _currentPickupInArms = pickup;
         _currentPickupInView = null;
 
         _currentPickupInArms.PickedUp();
@@ -165,14 +157,47 @@ public class PlayerPickUp : MonoBehaviour
 
     private void PickUpFromHolder()
     {
+
         _currentPickupInArms = _holderInView.Pickup();
 
-        _currentPickupInArms.transform.parent = _holder;
+        _currentPickupInArms.PickedUp();
+
+        switch(_currentPickupInArms.GetPickupType())
+        {
+            case (PickupType.ANTI_FLAMETHROWER):
+                {
+                    _toolHolder.localPosition = _flameHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_flameHolderRotation);
+                    _currentPickupInArms.transform.parent = _toolHolder;
+                    break;
+                }
+            case (PickupType.MOP):
+                {
+                    _toolHolder.localPosition = _mopHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_mopHolderRotation);
+                    _currentPickupInArms.transform.parent = _toolHolder;
+                    break;
+                }
+            case (PickupType.WRENCH):
+                {
+                    _toolHolder.localPosition = _wrenchHolderPosition;
+                    _toolHolder.localRotation = Quaternion.Euler(_wrenchHolderRotation);
+                    _currentPickupInArms.transform.parent = _toolHolder;
+                    break;
+                }
+            default:
+                {
+                    _currentPickupInArms.transform.parent = _itemHolder;
+
+                    // LÄGG IN ANIMATION FÖR SPRINGA MED ITEM
+
+                    break;
+                }
+        }
 
         _currentPickupInArms.transform.localPosition = Vector3.zero;
         _currentPickupInArms.transform.localScale = Vector3.one;
         _currentPickupInArms.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-        _currentPickupInArms.PickedUp();
     }
 }
