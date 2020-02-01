@@ -7,7 +7,8 @@ public enum PickupType
     WRENCH,
     DUCTTAPE,
     MOP,
-    OTHER
+    OTHER,
+    NOTHING
     //NYA HÄR SEN
 }
 
@@ -32,6 +33,10 @@ public class Pickup : MonoBehaviour
     {
         _thisCollider.enabled = false;
         _thisRigidBody.isKinematic = true;
+
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+        transform.localScale = Vector3.one;
     }
 
     public void Drop(Vector3 playerVelocity)

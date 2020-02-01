@@ -14,7 +14,21 @@ public class Holder : MonoBehaviour
         _thisPickUp = pickup;
         _thisPickUp.transform.parent = _place;
         _thisPickUp.transform.localPosition = Vector3.zero;
-        _thisPickUp.transform.rotation = Quaternion.identity;
+        _thisPickUp.transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    public bool CanPickUp()
+    {
+        if (_thisPickUp != null)
+            return true;
+        return false;
+    }
+
+    public bool CanDropOff()
+    {
+        if (_thisPickUp != null)
+            return false;
+        return true;
     }
 
     public Pickup Pickup()
