@@ -4,13 +4,43 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float acceleration = 1.0f;
-    [SerializeField] private float deceleration = 1.0f;
-    [SerializeField] private float maxSpeed = 200.0f;
+    [Header("Standard Movement")]
+    public float acceleration = 1.0f;
+    public float deceleration = 1.0f;
+    public float maxSpeed = 200.0f;
+    public float rotationSpeed;
+
+    [Header("Dashing")]
+    public float dashTime;
+    public float dashSpeed;
+    public bool stickyDashing;
+
+    public Animator animator;
+
+    private StateMachine<PlayerMovement> _stateMachine;
+    public StateMachine<PlayerMovement> StateMachine {
+        get { return _stateMachine; }
+    }
 
     private Vector3 _currentDirectionVector;
+    public Vector3 CurrentDirectionVector {
+        get { return _currentDirectionVector; }
+    }
+
+    /// <returns>Returns true if directionVector is not a zero-vector</returns>
+    public bool UpdateCurrentDirectionVector() {
+        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
+        float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+        Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
+        if (directionVector != Vector3.zero) {
+            _currentDirectionVector = directionVector;
+            return true;
+        }
+        return false;
+    }
+
     private float _currentSpeed;
-    private float CurrentSpeed {
+    public float CurrentSpeed {
         get { return _currentSpeed; }
         set {
             if (value < maxSpeed * Time.deltaTime && value > 0.0f) {
@@ -25,36 +55,73 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private Rigidbody Rigidbody {
-        get {
-            return GetComponent<Rigidbody>();
-        }
+    public Rigidbody Rigidbody {
+        get { return GetComponent<Rigidbody>(); }
     }
 
-    [SerializeField] private float rotationSpeed;
-    void Update()
-    {
-        Movement();
+
+    private void Start() {
+        _stateMachine = new StateMachine<PlayerMovement>(this);
+        _stateMachine.ChangeState(new MovementState());
+    }
+
+    void Update() {
+        Repair();
+        _stateMachine.Update();
     }
 
     private void Repair() {
 
     }
-
-    private void Movement() {
-        Rigidbody.velocity = Vector3.zero;
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-        Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
-        if (directionVector != Vector3.zero) {
-            CurrentSpeed += acceleration * Time.deltaTime;
-            _currentDirectionVector = directionVector;
+}
+public class MovementState : State<PlayerMovement>
+{
+    public override void UpdateState(PlayerMovement owner) {
+        Movement(owner);
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            owner.StateMachine.ChangeState(new DashState());
+        }
+    }
+    private void Movement(PlayerMovement owner) {
+        owner.Rigidbody.velocity = Vector3.zero;
+        if (owner.UpdateCurrentDirectionVector()) {
+            owner.CurrentSpeed += owner.acceleration * Time.deltaTime;
         }
         else {
-            CurrentSpeed -= deceleration * Time.deltaTime;
+            owner.CurrentSpeed -= owner.deceleration * Time.deltaTime;
         }
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_currentDirectionVector), rotationSpeed);
-        Rigidbody.velocity += _currentDirectionVector * CurrentSpeed;
+        owner.animator.SetFloat("speed", owner.CurrentSpeed);
+        owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, Quaternion.LookRotation(owner.CurrentDirectionVector), owner.rotationSpeed);
+        owner.Rigidbody.velocity += owner.CurrentDirectionVector * owner.CurrentSpeed;
+    }
+
+    public override void EnterState(PlayerMovement owner) { }
+    public override void ExitState(PlayerMovement owner) { }
+}
+
+public class DashState : State<PlayerMovement>
+{
+    private Timer _timer;
+    public override void EnterState(PlayerMovement owner) {
+        _timer = new Timer(owner.dashTime);
+        if (owner.stickyDashing)
+            owner.UpdateCurrentDirectionVector();
+    }
+
+    public override void UpdateState(PlayerMovement owner) { // TODO: Fucka andra när du dashar, exempelvis att du spawnar en collider/enablear
+        _timer.Time += Time.deltaTime;
+        if (_timer.Expired()) {
+            owner.StateMachine.ChangeState(new MovementState());
+        }
+        else {
+            if (!owner.stickyDashing)
+                owner.UpdateCurrentDirectionVector();
+            owner.Rigidbody.velocity = owner.CurrentDirectionVector * owner.dashSpeed * Time.deltaTime;
+        }
+    }
+
+    public override void ExitState(PlayerMovement owner) {
+        _timer.Reset();
     }
 }
