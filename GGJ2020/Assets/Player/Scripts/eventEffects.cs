@@ -26,6 +26,7 @@ public class eventEffects : MonoBehaviour
 
 
     // Space puddle //
+    [SerializeField] private float inertiaDivider;
     private float _floatTimer;
     private float _floatTime;
     private bool _floatTimerStarted;
@@ -36,7 +37,7 @@ public class eventEffects : MonoBehaviour
         _floatTime = time;
         _floatTimerStarted = true;
         GetComponent<PlayerMovement>().enabled = false;
-        _rb.velocity = _rb.velocity.normalized * 3;
+        _rb.velocity = _rb.velocity / inertiaDivider;
        GetComponent<Gravity>().UseGravity = false;
        _rb.constraints = RigidbodyConstraints.None;
 
