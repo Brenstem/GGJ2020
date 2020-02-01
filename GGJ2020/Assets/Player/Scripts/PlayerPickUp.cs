@@ -64,19 +64,24 @@ public class PlayerPickUp : MonoBehaviour
             _holderInView = null;
     }
 
-
-    public PickupType CurrentlyHolding(out bool holdingAnything)
+    public void RemoveItemIfNotTool()
     {
-        if (_currentPickupInArms == null)
-        {
-            holdingAnything = false;
-            return PickupType.NOTHING;
-        }
+        PickupType type = _currentPickupInArms.GetPickupType();
+
+        if(type == PickupType.ANTI_FLAMETHROWER || type == PickupType.WRENCH || type == PickupType.MOP) { }
         else
         {
-            holdingAnything = true;
-            return _currentPickupInArms.GetPickupType();
+            GameObject.Destroy(_currentPickupInArms.gameObject);
+            _currentPickupInArms = null;
         }
+    }
+
+    public PickupType CurrentlyHolding()
+    {
+        if (_currentPickupInArms == null)
+            return PickupType.NOTHING;
+        else
+            return _currentPickupInArms.GetPickupType();
     }
 
     private void PickupNewItem()
@@ -85,12 +90,42 @@ public class PlayerPickUp : MonoBehaviour
 
         switch(type)
         {
-            case (PickupType.DUCTTAPE):
+            case (PickupType.ANTI_FLAMETHROWER):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.CHIP):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.GLUE):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.METAL):
                 {
                     BasicPickUp();
                     break;
                 }
             case (PickupType.MOP):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.SCREW):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.TAPE):
+                {
+                    BasicPickUp();
+                    break;
+                }
+            case (PickupType.WIRE):
                 {
                     BasicPickUp();
                     break;
