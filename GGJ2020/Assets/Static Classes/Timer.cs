@@ -47,7 +47,7 @@ public class Timer
 
     public bool Expired()
     {
-        return _time > _duration;
+        return _time >= _duration;
     }
 
     public void Reset()
