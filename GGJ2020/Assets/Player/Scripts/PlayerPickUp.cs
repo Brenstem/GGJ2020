@@ -97,7 +97,8 @@ public class PlayerPickUp : MonoBehaviour
     {
         PickupType type = _currentPickupInView.GetPickupType();
 
-        switch(type)
+        GetComponent<PlayerMovement>().animator.SetBool("pickupItem", false);
+        switch (type)
         {
             case (PickupType.ANTI_FLAMETHROWER):
                 {
@@ -124,8 +125,7 @@ public class PlayerPickUp : MonoBehaviour
                 {
                     BasicPickUp(pickup, _itemHolder);
 
-                    // LÄGG IN ANIMATION FÖR SPRINGA MED ITEM
-
+                    GetComponent<PlayerMovement>().animator.SetBool("pickupItem", true);
                     break;
                 }
         }
@@ -146,6 +146,7 @@ public class PlayerPickUp : MonoBehaviour
         _currentPickupInArms.transform.parent = null;
         _currentPickupInArms.transform.localScale = Vector3.one;
         _currentPickupInArms = null;
+        GetComponent<PlayerMovement>().animator.SetBool("pickupItem", false);
     }
 
     private void DropItemOnHolder()
@@ -153,6 +154,7 @@ public class PlayerPickUp : MonoBehaviour
         _currentPickupInArms.transform.localScale = Vector3.one;
         _holderInView.Place(_currentPickupInArms);
         _currentPickupInArms = null;
+        GetComponent<PlayerMovement>().animator.SetBool("pickupItem", false);
     }
 
     private void PickUpFromHolder()
@@ -162,7 +164,8 @@ public class PlayerPickUp : MonoBehaviour
 
         _currentPickupInArms.PickedUp();
 
-        switch(_currentPickupInArms.GetPickupType())
+        GetComponent<PlayerMovement>().animator.SetBool("pickupItem", false);
+        switch (_currentPickupInArms.GetPickupType())
         {
             case (PickupType.ANTI_FLAMETHROWER):
                 {
@@ -189,7 +192,7 @@ public class PlayerPickUp : MonoBehaviour
                 {
                     _currentPickupInArms.transform.parent = _itemHolder;
 
-                    // LÄGG IN ANIMATION FÖR SPRINGA MED ITEM
+                    GetComponent<PlayerMovement>().animator.SetBool("pickupItem", true);
 
                     break;
                 }
