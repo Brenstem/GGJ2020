@@ -324,8 +324,8 @@ MonoBehaviour:
     _pickupType: 0
     _amount: 3
   - _mainColor: {r: 0, g: 0.07460141, b: 1, a: 1}
-    _pickupType: 2
-    _amount: 0
+    _pickupType: 8
+    _amount: 7
 --- !u!1 &76167271686069116
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +619,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: -2888486459038998104, guid: 2ff3ad5e27508504ebf10d0a7b1fe9ec,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec06065d78083cc4396289d52863c87f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ff3ad5e27508504ebf10d0a7b1fe9ec, type: 3}
 --- !u!4 &8705567717918568588 stripped
