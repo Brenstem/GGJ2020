@@ -36,7 +36,7 @@ public class eventEffects : MonoBehaviour
         _floatTime = time;
         _floatTimerStarted = true;
         GetComponent<PlayerMovement>().enabled = false;
-        _rb.velocity = _rb.velocity.normalized;
+        _rb.velocity = _rb.velocity.normalized * 3;
        GetComponent<Gravity>().UseGravity = false;
        _rb.constraints = RigidbodyConstraints.None;
 
