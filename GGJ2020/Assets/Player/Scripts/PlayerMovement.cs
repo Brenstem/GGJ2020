@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         get { return _stateMachine; }
     }
 
-    private Vector3 _currentDirectionVector;
+    [SerializeField] private Vector3 _currentDirectionVector;
     public Vector3 CurrentDirectionVector {
         get { return _currentDirectionVector; }
     }
@@ -63,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start() {
         _stateMachine = new StateMachine<PlayerMovement>(this);
         _stateMachine.ChangeState(new MovementState());
+        _currentDirectionVector = new Vector3(0, 0, -1);
+        transform.rotation = Quaternion.LookRotation(_currentDirectionVector);
     }
 
     void Update() {
@@ -107,6 +109,7 @@ public class DashState : State<PlayerMovement>
         _timer = new Timer(owner.dashTime);
         if (owner.stickyDashing)
             owner.UpdateCurrentDirectionVector();
+        owner.transform.rotation = Quaternion.LookRotation(owner.CurrentDirectionVector);
     }
 
     public override void UpdateState(PlayerMovement owner) { // TODO: Fucka andra när du dashar, exempelvis att du spawnar en collider/enablear
