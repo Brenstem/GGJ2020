@@ -28,11 +28,11 @@ public class PlayerPickUp : MonoBehaviour
             if (_currentPickupInArms == null && _currentPickupInView != null)
                 PickupNewItem();
             //Holding item and can let go of item
-            else if (_currentPickupInArms != null && _holderInView != null)
+            else if (_currentPickupInArms != null && _holderInView != null && _holderInView.CanDropOff())
                 DropItemOnHolder();
             else if (_currentPickupInArms != null && _holderInView == null)
                 DropItem();
-            else if (_currentPickupInArms == null && _holderInView != null)
+            else if (_currentPickupInArms == null && _holderInView != null && _holderInView.CanPickUp())
                 PickUpFromHolder();
         }
     }
@@ -62,6 +62,21 @@ public class PlayerPickUp : MonoBehaviour
         //If object out view is a holder
         if (holder == _holderInView)
             _holderInView = null;
+    }
+
+
+    public PickupType CurrentlyHolding(out bool holdingAnything)
+    {
+        if (_currentPickupInArms == null)
+        {
+            holdingAnything = false;
+            return PickupType.NOTHING;
+        }
+        else
+        {
+            holdingAnything = true;
+            return _currentPickupInArms.GetPickupType();
+        }
     }
 
     private void PickupNewItem()
@@ -95,10 +110,6 @@ public class PlayerPickUp : MonoBehaviour
         _currentPickupInArms = _currentPickupInView;
         _currentPickupInView = null;
 
-        _currentPickupInArms.transform.localPosition = Vector3.zero;
-        _currentPickupInArms.transform.rotation = Quaternion.identity;
-        _currentPickupInArms.transform.localScale = Vector3.one;
-
         _currentPickupInArms.PickedUp();
     }
 
@@ -124,8 +135,8 @@ public class PlayerPickUp : MonoBehaviour
         _currentPickupInArms.transform.parent = _holder;
 
         _currentPickupInArms.transform.localPosition = Vector3.zero;
-        _currentPickupInArms.transform.rotation = Quaternion.identity;
         _currentPickupInArms.transform.localScale = Vector3.one;
+        _currentPickupInArms.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         _currentPickupInArms.PickedUp();
     }
