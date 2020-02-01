@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 _currentDirectionVector;
     public Vector3 CurrentDirectionVector {
         get { return _currentDirectionVector; }
+        set { _currentDirectionVector = value; }
     }
 
     /// <returns>Returns true if directionVector is not a zero-vector</returns>
@@ -78,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 }
 public class MovementState : State<PlayerMovement>
 {
+    private Timer _timer;
     public override void UpdateState(PlayerMovement owner) {
         Movement(owner);
         if (Input.GetKeyDown(KeyCode.Q)) {
@@ -88,9 +90,11 @@ public class MovementState : State<PlayerMovement>
         owner.Rigidbody.velocity = Vector3.zero;
         if (owner.UpdateCurrentDirectionVector()) {
             owner.CurrentSpeed += owner.acceleration * Time.deltaTime;
+            owner.animator.SetBool("running", true);
         }
         else {
             owner.CurrentSpeed -= owner.deceleration * Time.deltaTime;
+            owner.animator.SetBool("running", false);
         }
 
         owner.animator.SetFloat("speed", owner.CurrentSpeed);
@@ -98,8 +102,12 @@ public class MovementState : State<PlayerMovement>
         owner.Rigidbody.velocity += owner.CurrentDirectionVector * owner.CurrentSpeed;
     }
 
-    public override void EnterState(PlayerMovement owner) { }
-    public override void ExitState(PlayerMovement owner) { }
+    public override void EnterState(PlayerMovement owner) {
+        owner.animator.SetBool("running", true);
+    }
+    public override void ExitState(PlayerMovement owner) {
+        owner.animator.SetBool("running", false);
+    }
 }
 
 public class DashState : State<PlayerMovement>
@@ -110,6 +118,8 @@ public class DashState : State<PlayerMovement>
         if (owner.stickyDashing)
             owner.UpdateCurrentDirectionVector();
         owner.transform.rotation = Quaternion.LookRotation(owner.CurrentDirectionVector);
+        owner.animator.SetBool("dashing", true);
+        owner.animator.Play("anim_char_dash");
     }
 
     public override void UpdateState(PlayerMovement owner) { // TODO: Fucka andra när du dashar, exempelvis att du spawnar en collider/enablear
@@ -118,13 +128,21 @@ public class DashState : State<PlayerMovement>
             owner.StateMachine.ChangeState(new MovementState());
         }
         else {
-            if (!owner.stickyDashing)
-                owner.UpdateCurrentDirectionVector();
+            if (!owner.stickyDashing) {
+                float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
+                float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+                Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
+                owner.CurrentDirectionVector += directionVector / 10;
+                owner.CurrentDirectionVector = Vector3.Normalize(owner.CurrentDirectionVector);
+                owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, Quaternion.LookRotation(owner.CurrentDirectionVector), owner.rotationSpeed);
+            }
             owner.Rigidbody.velocity = owner.CurrentDirectionVector * owner.dashSpeed * Time.deltaTime;
         }
     }
 
     public override void ExitState(PlayerMovement owner) {
+        owner.animator.SetBool("dashing", false);
+        owner.animator.SetBool("maxRun", true);
         _timer.Reset();
     }
 }
