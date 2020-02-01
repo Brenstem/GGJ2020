@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gravity : MonoBehaviour
 {
     [SerializeField] private float gravityModifier;
-
+    [SerializeField] private float mass;
 
     private bool _useGravity;
     private Rigidbody _rb;
@@ -40,7 +40,7 @@ public class Gravity : MonoBehaviour
 
             if (ObjectVelocity.y < 0)
             {
-                _rb.AddForce(new Vector3(0, -gravityModifier, 0) * (_rb.mass * _rb.mass));
+                _rb.AddForce(new Vector3(0, -gravityModifier, 0) * (mass * mass));
             }
         }    
     }
