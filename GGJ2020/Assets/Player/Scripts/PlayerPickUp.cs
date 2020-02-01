@@ -78,8 +78,8 @@ public class PlayerPickUp : MonoBehaviour
         PickupType type = _currentPickupInArms.GetPickupType();
 
         if(type == PickupType.ANTI_FLAMETHROWER || type == PickupType.WRENCH || type == PickupType.MOP) { }
-        else
-        {
+        else {
+            GetComponent<PlayerMovement>().animator.SetBool("pickupItem", false);
             GameObject.Destroy(_currentPickupInArms.gameObject);
             _currentPickupInArms = null;
         }

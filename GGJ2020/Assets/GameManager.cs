@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float gameTimeTotal;
     [SerializeField] private float minRandomDestroyTime = 1.0f;
     [SerializeField] private float maxRandomDestroyTime = 1.0f;
+    [SerializeField] private Transform repairablesContainer;
     [SerializeField] private List<Repairable> repairables;
 
     private static GameManager _instance;
@@ -31,6 +32,10 @@ public class GameManager : MonoBehaviour
     }
 
     private void Awake() {
+        repairables = new List<Repairable>();
+        for (int i = 0; i < repairablesContainer.childCount; i++) {
+            repairables.Add(repairablesContainer.GetChild(i).GetComponent<Repairable>());
+        }
         Initialize();
     }
 
@@ -41,11 +46,24 @@ public class GameManager : MonoBehaviour
         foreach (Repairable r in repairables) {
             r.RepairDoneEvent += AddRepairable;
         }
-        print(_destroyTimer);
     }
 
     private void DestroyRepariable(Repairable item) {
-        //fixa break
+        List<PickupType> availableMats = item.GetAvailableMaterials();
+        int itemCount = Random.Range(1, 3);
+
+        HashSet<int> matIndexes = new HashSet<int>();
+        while (matIndexes.Count < itemCount) {
+            matIndexes.Add(Random.Range(0, availableMats.Count - 1));
+        }
+
+        List<RepairStage> repairStages = new List<RepairStage>();
+        foreach (int index in matIndexes) {
+            repairStages.Add(new RepairStage(availableMats[index], Random.Range(1, 3), Color.black));
+        }
+
+        item.Break(repairStages);
+
         repairables.Remove(item);
     }
 
