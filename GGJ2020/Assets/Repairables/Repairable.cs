@@ -6,6 +6,14 @@ using UnityEngine.UI;
 [System.Serializable]
 public class RepairStage
 {
+    [SerializeField] Sprite _wireSprite;
+    [SerializeField] Sprite _tapeSprite;
+    [SerializeField] Sprite _screwSprite;
+    [SerializeField] Sprite _glueSprite;
+    [SerializeField] Sprite _metalSprite;
+    [SerializeField] Sprite _chipSprite;
+
+
     [SerializeField] Color _mainColor = Color.white;
     [SerializeField] PickupType _pickupType;
     [SerializeField, Range(0, 10)] int _amount;
