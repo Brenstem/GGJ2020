@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3902172585126123309}
   - component: {fileID: 3902172585126123310}
   - component: {fileID: 3902172585126123297}
+  - component: {fileID: 921152273}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -95,6 +96,19 @@ CapsuleCollider:
   m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &921152273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902172585126123296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3cf09d8820e75948977e9b81d2055ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPickUpScript: {fileID: 3902172585126123310}
 --- !u!1001 &3902172585763654632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -262,18 +276,19 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7477529663032389542, guid: 626a075d558c89e4da790c3f0d1af3a4,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7477529663032389543, guid: 626a075d558c89e4da790c3f0d1af3a4,
         type: 3}
       propertyPath: m_Size.x
       value: 0.64
       objectReference: {fileID: 0}
+    - target: {fileID: 7477529663032389543, guid: 626a075d558c89e4da790c3f0d1af3a4,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7477529663032389542, guid: 626a075d558c89e4da790c3f0d1af3a4, type: 3}
+    - {fileID: 7477529663032389541, guid: 626a075d558c89e4da790c3f0d1af3a4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 626a075d558c89e4da790c3f0d1af3a4, type: 3}
 --- !u!4 &5900499285816629104 stripped
 Transform:
