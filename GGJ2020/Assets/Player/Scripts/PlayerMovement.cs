@@ -82,7 +82,7 @@ public class MovementState : State<PlayerMovement>
     private Timer _timer;
     public override void UpdateState(PlayerMovement owner) {
         Movement(owner);
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             owner.StateMachine.ChangeState(new DashState());
         }
     }
