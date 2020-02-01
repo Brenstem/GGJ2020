@@ -124,8 +124,9 @@ public class PlayerPickUp : MonoBehaviour
             default:
                 {
                     BasicPickUp(pickup, _itemHolder);
-
-                    GetComponent<PlayerMovement>().animator.SetBool("pickupItem", true);
+                    var anim = GetComponent<PlayerMovement>().animator;
+                    anim.SetBool("pickupItem", true);
+                    anim.Play("anim_char_pickup");
                     break;
                 }
         }
@@ -191,9 +192,9 @@ public class PlayerPickUp : MonoBehaviour
             default:
                 {
                     _currentPickupInArms.transform.parent = _itemHolder;
-
-                    GetComponent<PlayerMovement>().animator.SetBool("pickupItem", true);
-
+                    var anim = GetComponent<PlayerMovement>().animator;
+                    anim.SetBool("pickupItem", true);
+                    anim.Play("anim_char_pickup");
                     break;
                 }
         }

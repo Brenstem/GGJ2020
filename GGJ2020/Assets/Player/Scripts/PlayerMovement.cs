@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dashing")]
     public float dashTime;
     public float dashSpeed;
+    public float dashLagTime;
     public bool stickyDashing;
 
     public Animator animator;
@@ -79,10 +80,13 @@ public class PlayerMovement : MonoBehaviour
 }
 public class MovementState : State<PlayerMovement>
 {
-    private Timer _timer;
+    private bool isDashReady;
+    private Timer _dashTimer; //dashLagTime
+
     public override void UpdateState(PlayerMovement owner) {
         Movement(owner);
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        _dashTimer.Time += Time.deltaTime;
+        if (_dashTimer.Expired() && Input.GetKeyDown(KeyCode.Q)) {
             owner.StateMachine.ChangeState(new DashState());
         }
     }
@@ -103,13 +107,34 @@ public class MovementState : State<PlayerMovement>
     }
 
     public override void EnterState(PlayerMovement owner) {
-        owner.animator.SetBool("running", true);
+        _dashTimer = new Timer(owner.dashLagTime);
     }
     public override void ExitState(PlayerMovement owner) {
         owner.animator.SetBool("running", false);
+        _dashTimer.Reset();
     }
 }
+public class NoGravityState : State<PlayerMovement>
+{
+    bool flag1, flag2;
+    public override void EnterState(PlayerMovement owner) {
+        owner.animator.SetBool("useGravity", false);
+        owner.animator.Play("anim_char_spaceSlip");
+    }
 
+    public override void ExitState(PlayerMovement owner) {
+        owner.animator.SetBool("useGravity", true);
+        Debug.Log(owner.animator.GetBool("useGravity"));
+    }
+
+    public override void UpdateState(PlayerMovement owner) {
+        if (owner.GetComponent<Gravity>().UseGravity) {
+            owner.StateMachine.ChangeState(new MovementState());
+        }
+
+        //owner.animator.Play("anim_char_recover");
+    }
+}
 public class DashState : State<PlayerMovement>
 {
     private Timer _timer;
@@ -119,7 +144,10 @@ public class DashState : State<PlayerMovement>
             owner.UpdateCurrentDirectionVector();
         owner.transform.rotation = Quaternion.LookRotation(owner.CurrentDirectionVector);
         owner.animator.SetBool("dashing", true);
-        owner.animator.Play("anim_char_dash");
+        if (owner.animator.GetBool("pickupItem"))
+            owner.animator.Play("anim_char_dash_hold");
+        else
+            owner.animator.Play("anim_char_dash");
     }
 
     public override void UpdateState(PlayerMovement owner) { // TODO: Fucka andra när du dashar, exempelvis att du spawnar en collider/enablear
@@ -144,5 +172,11 @@ public class DashState : State<PlayerMovement>
         owner.animator.SetBool("dashing", false);
         owner.animator.SetBool("maxRun", true);
         _timer.Reset();
+
+        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
+        float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+        Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
+        if (directionVector != Vector3.zero)
+            owner.animator.SetBool("running", true);
     }
 }

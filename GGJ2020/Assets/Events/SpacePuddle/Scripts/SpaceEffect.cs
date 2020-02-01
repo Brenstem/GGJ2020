@@ -18,6 +18,7 @@ public class SpaceEffect : MonoBehaviour
             hit.GetComponent<Rigidbody>().AddForce(Vector3.up * bounceForce);
             Vector3 torqueVector = hit.transform.position - this.transform.position;
             hit.GetComponent<Rigidbody>().AddTorque(torqueVector * torqueForce);
+            hit.GetComponent<PlayerMovement>().StateMachine.ChangeState(new NoGravityState());
         }
     }
 }
