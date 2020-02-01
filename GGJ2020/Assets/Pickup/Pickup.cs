@@ -5,11 +5,15 @@ using UnityEngine;
 public enum PickupType
 {
     WRENCH,
-    DUCTTAPE,
+    ANTI_FLAMETHROWER,
     MOP,
-    OTHER,
+    METAL,
+    WIRE,
+    SCREW,
+    CHIP,
+    TAPE,
+    GLUE,
     NOTHING
-    //NYA HÄR SEN
 }
 
 public class Pickup : MonoBehaviour
