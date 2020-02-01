@@ -6,8 +6,8 @@ public class Gravity : MonoBehaviour
 {
     [SerializeField] private float gravityModifier;
     [SerializeField] private float mass;
+    [SerializeField] private bool _useGravity;
 
-    private bool _useGravity;
     private Rigidbody _rb;
     private Vector3 _prevPosition;
     private Vector3 _newPosition;
@@ -38,9 +38,10 @@ public class Gravity : MonoBehaviour
         {
             _rb.AddForce(new Vector3(0, -gravityModifier, 0));
 
-            if (ObjectVelocity.y < 0)
+            if (ObjectVelocity.y < -0.1)
             {
-                _rb.AddForce(new Vector3(0, -gravityModifier, 0) * (mass * mass));
+                print("falling");
+                _rb.AddForce(new Vector3(0, -gravityModifier, 0) * mass);
             }
         }    
     }

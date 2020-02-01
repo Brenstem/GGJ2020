@@ -13,12 +13,6 @@ public class eventEffects : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpacePuddleEffect(5f);
-        }
-
-
         if (_floatTimerStarted)
         {
             _floatTimer += Time.deltaTime;
