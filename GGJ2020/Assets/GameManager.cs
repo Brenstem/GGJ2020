@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static int score;
     private Timer _destroyTimer;
-    private Timer _puddleTimer;
+    [SerializeField] private Timer _puddleTimer;
     private float startTime;
     [SerializeField] private Text timeText;
     [SerializeField] private float gameTimeTotal;
@@ -84,8 +85,10 @@ public class GameManager : MonoBehaviour
     }
 
     private void AddRepairable(Repairable item) {
+        score += 10;
         audioClip = item.audioClip;
-        audioSource.Play();
+        if (audioClip != null)
+            audioSource.Play();
         repairables.Add(item);
     }
 
@@ -101,29 +104,31 @@ public class GameManager : MonoBehaviour
         int fraction = (int)(guiTime * 100) % 100;
         if (minutes + seconds + fraction <= 0) {
             minutes = seconds = fraction = 0;
-            EventManager.TriggerEvent("Quit");
+            timeText.text = "Score: " + score;
         }
-        _destroyTimer.Time += Time.deltaTime;
-        if (_destroyTimer.Expired()) {
-            _destroyTimer.Reset();
-            _destroyTimer = new Timer(Random.Range(minRandomDestroyTime, maxRandomDestroyTime));
-            if (repairables.Count >= 1) {
-                DestroyRepariable(repairables[Random.Range(0, repairables.Count - 1)]);
+        else {
+            _destroyTimer.Time += Time.deltaTime;
+            if (_destroyTimer.Expired()) {
+                _destroyTimer.Reset();
+                _destroyTimer = new Timer(Random.Range(minRandomDestroyTime, maxRandomDestroyTime));
+                if (repairables.Count >= 1) {
+                    DestroyRepariable(repairables[Random.Range(0, repairables.Count - 1)]);
+                }
             }
-        }
-        _puddleTimer.Duration = puddleWorstCaseTime + puddleTimerIncrease * repairables.Count / _repairablesCount;
-        _puddleTimer.Time += Time.deltaTime;
-        if (_puddleTimer.Expired()) {
-            GameObject obj = Instantiate(puddlePrefab, new Vector3(Random.Range(puddleSpawnArea.x, puddleSpawnArea.width), 0, Random.Range(puddleSpawnArea.y, puddleSpawnArea.height)), Quaternion.identity, repairablesContainer);
-            obj.transform.position = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
-            //obj.transform.GetChild(0).transform.RotateAround(obj.transform.position, obj.transform.up, Random.Range(0, 359));
-            var r = obj.GetComponent<Repairable>();
-            AddRepairable(r);
-            DestroyRepariable(r);
-            _puddleTimer.Reset();
-        }
+            _puddleTimer.Duration = puddleWorstCaseTime + puddleTimerIncrease * Mathf.Abs(repairables.Count / _repairablesCount);
+            _puddleTimer.Time += Time.deltaTime;
+            if (_puddleTimer.Expired()) {
+                GameObject obj = Instantiate(puddlePrefab, new Vector3(Random.Range(puddleSpawnArea.x, puddleSpawnArea.width), 0, Random.Range(puddleSpawnArea.y, puddleSpawnArea.height)), Quaternion.identity, repairablesContainer);
+                obj.transform.position = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
+                //obj.transform.GetChild(0).transform.RotateAround(obj.transform.position, obj.transform.up, Random.Range(0, 359));
+                var r = obj.GetComponent<Repairable>();
+                _puddleTimer.Reset();
+                AddRepairable(r);
+                DestroyRepariable(r);
+            }
 
-        string text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, fraction);
-        timeText.text = text;
+            string text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            timeText.text = text;
+        }
     }
 }

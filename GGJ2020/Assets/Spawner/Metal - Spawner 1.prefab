@@ -1,17 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &361277672017470412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3903357847652728098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4348cee957c9f2949ab012e2360280c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4760566174626524046
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,12 +214,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b621b12496b13e14b82225e32bd302ab, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5402e31930ed44e4dbfb5763ac4df21f, type: 3}
---- !u!1 &3903357847652728098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 5402e31930ed44e4dbfb5763ac4df21f,
-    type: 3}
-  m_PrefabInstance: {fileID: 4974910090447266859}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &31765513613086513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 5402e31930ed44e4dbfb5763ac4df21f,
@@ -325,11 +307,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8383183168979704614}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: d7d9ee507975cfa41a5690eae23b2a7b,
-        type: 3}
-      propertyPath: m_Name
-      value: Metalscrap
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d7d9ee507975cfa41a5690eae23b2a7b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -384,6 +361,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d7d9ee507975cfa41a5690eae23b2a7b,
+        type: 3}
+      propertyPath: m_Name
+      value: Metalscrap
       objectReference: {fileID: 0}
     - target: {fileID: -392246648789513406, guid: d7d9ee507975cfa41a5690eae23b2a7b,
         type: 3}

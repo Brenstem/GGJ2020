@@ -1538,6 +1538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b29f7cab1561f4bb29fe0cb2369f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPortOne: 1
   acceleration: 100
   deceleration: 35
   maxSpeed: 350
@@ -1622,3 +1623,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35390ebfa39659a4b88b0f9ea0254f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inertiaDivider: 0
