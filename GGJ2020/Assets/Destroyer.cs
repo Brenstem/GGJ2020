@@ -16,6 +16,7 @@ public class Destroyer : Holder
 
     public override void Place(Pickup pickup)
     {
-        Destroy(pickup.gameObject);
+        if (pickup.GetPickupType() != PickupType.ANTI_FLAMETHROWER && pickup.GetPickupType() != PickupType.WRENCH && pickup.GetPickupType() != PickupType.MOP) 
+            Destroy(pickup.gameObject);
     }
 }

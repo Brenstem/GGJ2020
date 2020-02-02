@@ -106,8 +106,18 @@ public class Repairable : MonoBehaviour
         _stepRepairAmount = _eachStepRepairTimer.Duration;
     }
 
+    public virtual void StartedBreak()
+    {
+    }
+
+    public virtual void JustGotWholeAgain()
+    {
+    }
+
     public void Break(List<RepairStage> repairStages)
     {
+        StartedBreak();
+
         _needRepair = true;
 
         for (int i = 0; i < repairStages.Count; i++)
@@ -143,6 +153,8 @@ public class Repairable : MonoBehaviour
             _needRepair = false;
             if (RepairDoneEvent != null)
                 RepairDoneEvent(this);
+
+            JustGotWholeAgain();
         }
     }
 

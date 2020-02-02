@@ -13,7 +13,9 @@ public class LookTowardCamera : MonoBehaviour
 
     void Update()
     {
-        transform.LookAt(transform.position + _camera.transform.rotation * Vector3.back, _camera.transform.rotation * Vector3.up);
-        this.transform.Rotate(0, 180, 0);
+        Vector3 newPosition = _camera.transform.position - transform.position;
+        transform.forward = newPosition;
+        Vector3 thisRotation = transform.localRotation.eulerAngles;
+        transform.localRotation = Quaternion.Euler(0, thisRotation.y, 0);
     }
 }
