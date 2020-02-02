@@ -13,8 +13,8 @@ public class PlayerPickUp : MonoBehaviour
     [SerializeField] Vector3 _flameHolderRotation = new Vector3(180, 0, -78.8f);
 
     [Header("Drop")]
-    [SerializeField] Transform _toolHolder;
-    [SerializeField] Transform _itemHolder;
+    [SerializeField] public Transform _toolHolder;
+    [SerializeField] public Transform _itemHolder;
 
     Rigidbody _playerRigidBody;
 
@@ -29,7 +29,7 @@ public class PlayerPickUp : MonoBehaviour
 
     private void Update()
     {
-        bool fire1 = Input.GetButtonDown(InputStatics.FIRE_1);
+        bool fire1 = Input.GetButtonDown(GetComponent<PlayerMovement>().playerPortOne ? InputStatics.GRAB_1 : InputStatics.GRAB_2);
 
         if (fire1)
         {

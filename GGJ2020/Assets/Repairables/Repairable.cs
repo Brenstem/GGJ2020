@@ -58,6 +58,7 @@ public class RepairStage
 
 public class Repairable : MonoBehaviour
 {
+    [SerializeField] public AudioClip audioClip;
     [Header("Drop")]
     [SerializeField] Slider _slider;
     [SerializeField] Image _backgroundSliderImage;

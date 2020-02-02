@@ -70,6 +70,8 @@ public class MenuHandler : MonoBehaviour {
         }
     }
 
+    [SerializeField] float reelBack;
+    [SerializeField] float selected;
     protected virtual void PingCurrentCategory() {
         try {
             if (getCurrentCategory != null)
@@ -84,7 +86,6 @@ public class MenuHandler : MonoBehaviour {
                 UnityEditor.EditorGUIUtility.PingObject(getCurrentMenu);
 #endif
             }
-            arrow.position = new Vector3(arrow.position.x, getCurrentCategory.menus[getCurrentCategory.CurrentIndex].transform.position.y, arrow.position.z);
         }
         catch (Exception e) {
             Debug.LogWarning(e, this);
@@ -92,8 +93,14 @@ public class MenuHandler : MonoBehaviour {
     }
 
     protected virtual void UpdateCurrentIndex(int incrementalValue) {
-        if (getCurrentCategory != null)
+        if (getCurrentCategory != null) {
             getCurrentCategory.CurrentIndex += incrementalValue;
+            foreach (var item in getCurrentCategory.menus) {
+                item.transform.localPosition = new Vector3(item.transform.localPosition.x, item.transform.localPosition.y, reelBack);
+            }
+            var lPos = getCurrentCategory.menus[getCurrentCategory.CurrentIndex].transform.localPosition;
+            getCurrentCategory.menus[getCurrentCategory.CurrentIndex].transform.localPosition = new Vector3(lPos.x, lPos.y, selected);
+        }
     }
 
     protected virtual void TriggerCategory() {
