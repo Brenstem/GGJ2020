@@ -40,7 +40,6 @@ public class Gravity : MonoBehaviour
 
             if (ObjectVelocity.y < -0.01)
             {
-                print("falling");
                 _rb.AddForce(new Vector3(0, -gravityModifier, 0) * mass);
             }
         }    

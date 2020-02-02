@@ -91,6 +91,7 @@ public class MovementState : State<PlayerMovement>
             owner.StateMachine.ChangeState(new DashState());
         }
     }
+
     private void Movement(PlayerMovement owner) {
         owner.Rigidbody.velocity = Vector3.zero;
         if (owner.UpdateCurrentDirectionVector()) {
