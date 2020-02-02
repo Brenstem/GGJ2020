@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class eventEffects : MonoBehaviour
 {
+    [SerializeField] AudioClip slip1;
+    [SerializeField] AudioClip slip2;
+
+
     private Rigidbody _rb;
+    private AudioSource _audio;
+    private float clip;
+
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _audio = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
+        clip = Random.Range(0, 100);
         if (_floatTimerStarted)
         {
             _floatTimer += Time.deltaTime;
@@ -34,6 +43,16 @@ public class eventEffects : MonoBehaviour
     public void SpacePuddleEffect(float time)
     {
         print("Slipped on some space");
+        if (clip > 50)
+        {
+            _audio.clip = slip1;
+        }
+        else
+        {
+            _audio.clip = slip2;
+        }
+
+        _audio.Play();
         _floatTime = time;
         _floatTimerStarted = true;
         GetComponent<PlayerMovement>().enabled = false;

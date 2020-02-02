@@ -86,10 +86,11 @@ public class MovementState : State<PlayerMovement>
     public override void UpdateState(PlayerMovement owner) {
         Movement(owner);
         _dashTimer.Time += Time.deltaTime;
-        if (_dashTimer.Expired() && Input.GetKeyDown(KeyCode.Q)) {
+        if (_dashTimer.Expired() && Input.GetKeyDown(KeyCode.Space)) {
             owner.StateMachine.ChangeState(new DashState());
         }
     }
+
     private void Movement(PlayerMovement owner) {
         owner.Rigidbody.velocity = Vector3.zero;
         if (owner.UpdateCurrentDirectionVector()) {

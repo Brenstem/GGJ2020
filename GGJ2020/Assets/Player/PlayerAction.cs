@@ -6,9 +6,22 @@ public class PlayerAction : MonoBehaviour
 {
     [Header("Drop")]
     [SerializeField] PlayerPickUp _playerPickUpScript = null;
+    [SerializeField] AudioClip tapeSound;
+    [SerializeField] AudioClip wrenchSound;
+    [SerializeField] AudioClip fireExtinguisherSound;
+    [SerializeField] AudioClip glueSound;
+    [SerializeField] AudioClip mopSound;
+
     Repairable _repairableInView = null;
+    private AudioSource _audio;
     private bool isRepairing;
     private Transform defaultTransform;
+
+    private void Awake()
+    {
+        _audio = GetComponent<AudioSource>();
+    }
+
     private void Update()
     {
         bool pressedAction = Input.GetButton(InputStatics.FIRE_2);
@@ -18,8 +31,44 @@ public class PlayerAction : MonoBehaviour
         {
             PickupType holdingItem = _playerPickUpScript.CurrentlyHolding();
 
+            switch (holdingItem)
+            {
+                case PickupType.WRENCH:
+                    _audio.clip = wrenchSound;
+                    break;
+                case PickupType.ANTI_FLAMETHROWER:
+                    _audio.clip = fireExtinguisherSound;
+                    break;
+                case PickupType.MOP:
+                    _audio.clip = mopSound;
+                    break;
+                case PickupType.METAL:
+                    _audio.clip = wrenchSound;
+                    break;
+                case PickupType.WIRE:
+                    _audio.clip = wrenchSound;
+                    break;
+                case PickupType.SCREW:
+                    _audio.clip = wrenchSound;
+                    break;
+                case PickupType.CHIP:
+                    _audio.clip = wrenchSound;
+                    break;
+                case PickupType.TAPE:
+                    _audio.clip = tapeSound;
+                    break;
+                case PickupType.GLUE:
+                    _audio.clip = glueSound;
+                    break;
+                case PickupType.NOTHING:
+                    break;
+                default:
+                    break;
+            }
+
             if (_repairableInView != null && _repairableInView.CanRepair() && _repairableInView.HaveCurrentTool(holdingItem))
             {
+                _audio.Play();
                 _playerPickUpScript.RemoveItemIfNotTool();
 
                 _repairableInView.Repair(Time.deltaTime);
