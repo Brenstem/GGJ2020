@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public bool playerPortOne;
     [Header("Standard Movement")]
     public float acceleration = 1.0f;
     public float deceleration = 1.0f;
@@ -31,8 +32,8 @@ public class PlayerMovement : MonoBehaviour
 
     /// <returns>Returns true if directionVector is not a zero-vector</returns>
     public bool UpdateCurrentDirectionVector() {
-        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
-        float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+        float x = Input.GetAxisRaw(playerPortOne ? InputStatics.HORIZONTAL_1 : InputStatics.HORIZONTAL_2);
+        float z = Input.GetAxisRaw(playerPortOne ? InputStatics.VERTICAL_1 : InputStatics.VERTICAL_2);
         Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
         if (directionVector != Vector3.zero) {
             _currentDirectionVector = directionVector;
@@ -86,7 +87,7 @@ public class MovementState : State<PlayerMovement>
     public override void UpdateState(PlayerMovement owner) {
         Movement(owner);
         _dashTimer.Time += Time.deltaTime;
-        if (_dashTimer.Expired() && Input.GetKeyDown(KeyCode.Space)) {
+        if (_dashTimer.Expired() && Input.GetButtonDown(owner.playerPortOne ? InputStatics.DASH_1 : InputStatics.DASH_2)) {
             owner.StateMachine.ChangeState(new DashState());
         }
     }
@@ -158,8 +159,8 @@ public class DashState : State<PlayerMovement>
         }
         else {
             if (!owner.stickyDashing) {
-                float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
-                float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+                float x = Input.GetAxisRaw(owner.playerPortOne ? InputStatics.HORIZONTAL_1 : InputStatics.HORIZONTAL_2);
+                float z = Input.GetAxisRaw(owner.playerPortOne ? InputStatics.VERTICAL_1 : InputStatics.VERTICAL_2);
                 Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
                 owner.CurrentDirectionVector += directionVector / 10;
                 owner.CurrentDirectionVector = Vector3.Normalize(owner.CurrentDirectionVector);
@@ -174,8 +175,8 @@ public class DashState : State<PlayerMovement>
         owner.animator.SetBool("maxRun", true);
         _timer.Reset();
 
-        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL);
-        float z = Input.GetAxisRaw(InputStatics.VERTICAL);
+        float x = Input.GetAxisRaw(InputStatics.HORIZONTAL_1);
+        float z = Input.GetAxisRaw(InputStatics.VERTICAL_1);
         Vector3 directionVector = Vector3.Normalize(new Vector3(x, 0, z));
         if (directionVector != Vector3.zero)
             owner.animator.SetBool("running", true);

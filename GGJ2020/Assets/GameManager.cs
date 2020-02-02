@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform repairablesContainer;
     [SerializeField] private GameObject puddlePrefab;
     [SerializeField] private List<Repairable> repairables;
+    [SerializeField] private AudioClip audioClip;
+    private AudioSource audioSource;
+
     private int _repairablesCount;
 
     private static GameManager _instance;
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake() {
         UpdateRepairables();
+        audioSource = GetComponent<AudioSource>();
         Initialize();
     }
 
@@ -80,6 +84,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void AddRepairable(Repairable item) {
+        audioClip = item.audioClip;
+        audioSource.Play();
         repairables.Add(item);
     }
 

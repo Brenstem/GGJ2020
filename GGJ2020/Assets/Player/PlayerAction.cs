@@ -24,7 +24,7 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
-        bool pressedAction = Input.GetButton(InputStatics.FIRE_2);
+        bool pressedAction = Input.GetButton(GetComponent<PlayerMovement>().playerPortOne ? InputStatics.PLACE_1 : InputStatics.PLACE_2);
         var anim = GetComponent<PlayerMovement>().animator;
         isRepairing = false;
         if (pressedAction)
@@ -75,7 +75,7 @@ public class PlayerAction : MonoBehaviour
 
                 isRepairing = true;
                 anim.SetBool("isRepairing", isRepairing);
-                var t = GameObject.Find("ToolHolder").transform;
+                var t = GetComponent<PlayerPickUp>()._toolHolder.transform;
                 defaultTransform = t;
                 string animation = "anim_char_fix_generic";
                 switch (holdingItem) {
