@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 5151404254943578062}
   - component: {fileID: 5151404254943578057}
   m_Layer: 0
-  m_Name: Wire - Spawner
+  m_Name: Tape - Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

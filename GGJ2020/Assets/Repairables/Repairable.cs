@@ -90,6 +90,7 @@ public class Repairable : MonoBehaviour
     List<LayoutGroup> _layoutGroups = new List<LayoutGroup>();
     int _currentAmountItemDone = 0;
     int _amountItemToDo = 0;
+    private Vector3 _previousSliderLocalPosition;
 
     public delegate void RepairDoneDelegate(Repairable repairable);
     public event RepairDoneDelegate RepairDoneEvent;
@@ -104,6 +105,7 @@ public class Repairable : MonoBehaviour
     private void Awake()
     {
         _stepRepairAmount = _eachStepRepairTimer.Duration;
+        _previousSliderLocalPosition = _slider.transform.localPosition;
     }
 
     public virtual void StartedBreak()
@@ -123,10 +125,12 @@ public class Repairable : MonoBehaviour
         for (int i = 0; i < repairStages.Count; i++)
         {
             repairStages[i].SetSprites(_wireSprite, _tapeSprite, _screwSprite, _glueSprite, _metalSprite, _chipSprite, _wrenchSprite, _mopSprite, _antiFlameSprite);
-
             GameObject newGroup = GameObject.Instantiate(_layoutGroupPrefab, Vector3.zero, Quaternion.identity, _listOfStuffTransform) as GameObject;
             newGroup.transform.localPosition = Vector3.zero;
-            LayoutGroup newLayoutGroup = newGroup.GetComponent<LayoutGroup>();
+            float rotationAngle = Vector3.Angle(newGroup.transform.forward, Camera.main.transform.forward);
+            newGroup.transform.rotation = Quaternion.Euler(rotationAngle, 0, 0);
+
+                LayoutGroup newLayoutGroup = newGroup.GetComponent<LayoutGroup>();
             newLayoutGroup.Setup(repairStages[i]);
             _layoutGroups.Add(newLayoutGroup);
         }
@@ -161,7 +165,9 @@ public class Repairable : MonoBehaviour
     public void Repair(float time)
     {
         _slider.gameObject.SetActive(true);
-
+        float rotationAngle = Vector3.Angle(_slider.transform.forward, Camera.main.transform.forward);
+        _slider.transform.rotation = Quaternion.Euler(rotationAngle, 0, 0);
+        _slider.transform.localPosition = _previousSliderLocalPosition + Vector3.up * 100;
         if (_toolRequired == PickupType.WRENCH || _toolRequired == PickupType.MOP || _toolRequired == PickupType.ANTI_FLAMETHROWER)
         {
             _eachStepRepairTimer.Time += time;

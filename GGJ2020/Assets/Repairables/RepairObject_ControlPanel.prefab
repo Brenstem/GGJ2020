@@ -210,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1510442767672978070}
-  - component: {fileID: 1510442767672978153}
+  - component: {fileID: 7309109850272827879}
   m_Layer: 5
   m_Name: ListOfStuff
   m_TagString: Untagged
@@ -237,7 +237,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 64.5}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1510442767672978153
+--- !u!114 &7309109850272827879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1510442767672978071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -254,14 +254,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildAlignment: 3
+  m_StartCorner: 1
+  m_StartAxis: 1
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 67.2, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &1510442767984612527
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +437,7 @@ GameObject:
   - component: {fileID: 1510442768311594102}
   - component: {fileID: 1510442768311594103}
   - component: {fileID: 1510442768311594100}
-  - component: {fileID: 4367922957652180314}
+  - component: {fileID: 2736272224864166945}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -527,7 +526,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4367922957652180314
+--- !u!114 &2736272224864166945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -536,9 +535,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1510442768311594098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4348cee957c9f2949ab012e2360280c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 96da3801d545ade49a3e3632f8dd21c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flip: 0
 --- !u!1001 &7477494316736060944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -546,11 +546,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1510442768251958853}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 5cfd94437cfa0724a9c3a8a81cffa66c,
-        type: 3}
-      propertyPath: m_Name
-      value: fix_controlpanel
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5cfd94437cfa0724a9c3a8a81cffa66c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -621,11 +616,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5cfd94437cfa0724a9c3a8a81cffa66c,
+        type: 3}
+      propertyPath: m_Name
+      value: fix_controlpanel
+      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 5cfd94437cfa0724a9c3a8a81cffa66c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0cc23494f61c61c47aafe6a0e5375fd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 69238072afd8ff94f943e28a5482bd30, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cfd94437cfa0724a9c3a8a81cffa66c, type: 3}
 --- !u!4 &2503950506827166986 stripped

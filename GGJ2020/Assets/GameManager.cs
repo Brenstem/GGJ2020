@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float minRandomDestroyTime = 1.0f;
     [SerializeField] private float maxRandomDestroyTime = 1.0f;
     [SerializeField] private Transform repairablesContainer;
-    [SerializeField] private Transform puddlesContainer;
     [SerializeField] private GameObject puddlePrefab;
     [SerializeField] private List<Repairable> repairables;
     private int _repairablesCount;
@@ -34,13 +33,17 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
-    private void Awake() {
+    
+    private void UpdateRepairables() {
         repairables = new List<Repairable>();
         for (int i = 0; i < repairablesContainer.childCount; i++) {
             repairables.Add(repairablesContainer.GetChild(i).GetComponent<Repairable>());
         }
         _repairablesCount = repairables.Count;
+    }
+
+    private void Awake() {
+        UpdateRepairables();
         Initialize();
     }
 
@@ -56,16 +59,19 @@ public class GameManager : MonoBehaviour
 
     private void DestroyRepariable(Repairable item) {
         List<PickupType> availableMats = item.GetAvailableMaterials();
-        int itemCount = Random.Range(1, 3);
 
-        HashSet<int> matIndexes = new HashSet<int>();
-        while (matIndexes.Count < itemCount) {
-            matIndexes.Add(Random.Range(0, availableMats.Count - 1));
+        List<int> indexes = new List<int>();
+        for (int i = 0; i < (availableMats.Count <= 2 ? availableMats.Count : 3); i++) {
+            int val = Random.Range(0, availableMats.Count - 1);
+            if (!indexes.Contains(val))
+                indexes.Add(val);
+            else
+                i--;
         }
 
         List<RepairStage> repairStages = new List<RepairStage>();
-        foreach (int index in matIndexes) {
-            repairStages.Add(new RepairStage(availableMats[index], Random.Range(1, 3), Color.black));
+        for (int i = 0; i < (availableMats.Count <= 2 ? availableMats.Count : 3); i++) {
+            repairStages.Add(new RepairStage(availableMats[indexes[i]], Random.Range(1, 3), Color.black));
         }
 
         item.Break(repairStages);
@@ -102,8 +108,12 @@ public class GameManager : MonoBehaviour
         _puddleTimer.Duration = puddleWorstCaseTime + puddleTimerIncrease * repairables.Count / _repairablesCount;
         _puddleTimer.Time += Time.deltaTime;
         if (_puddleTimer.Expired()) {
-            GameObject obj = Instantiate(puddlePrefab, new Vector3(Random.Range(puddleSpawnArea.x, puddleSpawnArea.width), 0, Random.Range(puddleSpawnArea.y, puddleSpawnArea.height)), Quaternion.identity);
-            obj.transform.RotateAround(obj.transform.position, obj.transform.up, Random.Range(0, 359));
+            GameObject obj = Instantiate(puddlePrefab, new Vector3(Random.Range(puddleSpawnArea.x, puddleSpawnArea.width), 0, Random.Range(puddleSpawnArea.y, puddleSpawnArea.height)), Quaternion.identity, repairablesContainer);
+            obj.transform.position = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
+            //obj.transform.GetChild(0).transform.RotateAround(obj.transform.position, obj.transform.up, Random.Range(0, 359));
+            var r = obj.GetComponent<Repairable>();
+            AddRepairable(r);
+            DestroyRepariable(r);
             _puddleTimer.Reset();
         }
 
