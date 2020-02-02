@@ -6,13 +6,17 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     private Timer _destroyTimer;
+    private Timer _puddleTimer;
     private float startTime;
     [SerializeField] private Text timeText;
     [SerializeField] private float gameTimeTotal;
     [SerializeField] private float minRandomDestroyTime = 1.0f;
     [SerializeField] private float maxRandomDestroyTime = 1.0f;
     [SerializeField] private Transform repairablesContainer;
+    [SerializeField] private Transform puddlesContainer;
+    [SerializeField] private GameObject puddlePrefab;
     [SerializeField] private List<Repairable> repairables;
+    private int _repairablesCount;
 
     private static GameManager _instance;
     private static GameManager instance {
@@ -36,6 +40,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < repairablesContainer.childCount; i++) {
             repairables.Add(repairablesContainer.GetChild(i).GetComponent<Repairable>());
         }
+        _repairablesCount = repairables.Count;
         Initialize();
     }
 
@@ -43,6 +48,7 @@ public class GameManager : MonoBehaviour
     void Initialize() {
         startTime = Time.time;
         _destroyTimer = new Timer(5);
+        _puddleTimer = new Timer(puddleWorstCaseTime + puddleTimerIncrease * repairables.Count / _repairablesCount);
         foreach (Repairable r in repairables) {
             r.RepairDoneEvent += AddRepairable;
         }
@@ -71,7 +77,9 @@ public class GameManager : MonoBehaviour
         repairables.Add(item);
     }
 
-    // Update is called once per frame
+    [SerializeField] private float puddleWorstCaseTime;
+    [SerializeField] private float puddleTimerIncrease;
+    [SerializeField] private Rect puddleSpawnArea;
     void Update()
     {
         var guiTime = gameTimeTotal - Time.time - startTime;
@@ -90,6 +98,13 @@ public class GameManager : MonoBehaviour
             if (repairables.Count >= 1) {
                 DestroyRepariable(repairables[Random.Range(0, repairables.Count - 1)]);
             }
+        }
+        _puddleTimer.Duration = puddleWorstCaseTime + puddleTimerIncrease * repairables.Count / _repairablesCount;
+        _puddleTimer.Time += Time.deltaTime;
+        if (_puddleTimer.Expired()) {
+            GameObject obj = Instantiate(puddlePrefab, new Vector3(Random.Range(puddleSpawnArea.x, puddleSpawnArea.width), 0, Random.Range(puddleSpawnArea.y, puddleSpawnArea.height)), Quaternion.identity);
+            obj.transform.RotateAround(obj.transform.position, obj.transform.up, Random.Range(0, 359));
+            _puddleTimer.Reset();
         }
 
         string text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, fraction);
